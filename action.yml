@@ -70,6 +70,15 @@ runs:
 
         echo "OSXCROSS_TARGET=${OSXCROSS_FOLDER}/target" >> $GITHUB_ENV
 
+    - shell: bash
+      if: steps.cache.outputs.cache-hit != 'true'
+      env:
+        SDK_VERSION: "${{ inputs.osx-version }}"
+        UNATTENDED: "yes"
+      run: |
+        cd "$GITHUB_ACTION_PATH/osxcross"
+        bash ./build.sh
+
     - uses: actions/cache@v4
       id: cache
       with:
@@ -79,15 +88,6 @@ runs:
           ~/.cargo/git
           ${{ env.OSXCROSS_TARGET }}
           ${{ env.OSXCROSS_FOLDER }}/target/bin
-
-    - shell: bash
-      if: steps.cache.outputs.cache-hit != 'true'
-      env:
-        SDK_VERSION: "${{ inputs.osx-version }}"
-        UNATTENDED: "yes"
-      run: |
-        cd "$GITHUB_ACTION_PATH/osxcross"
-        bash ./build.sh
 
     - shell: bash
       run: |
