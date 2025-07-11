@@ -82,7 +82,7 @@ runs:
     - uses: actions/cache@v4
       id: cache
       with:
-        key: ${{ runner.os }}-osxcross-${{ inputs.osx-version }}
+        key: ${{ runner.os }}_osx-cross_${{ inputs.osx-version }}
         path: |
           ~/.cargo/registry
           ~/.cargo/git
