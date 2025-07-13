@@ -71,7 +71,7 @@ runs:
         echo "OSXCROSS_TARGET=${OSXCROSS_FOLDER}/target" >> $GITHUB_ENV
         sudo cat '/etc/os-release' >> os-release
 
-    - uses: actions/cache@v4
+    - uses: actions/cache/restore@v4
       id: osxcross-cache
       with:
         key: ${{ runner.os }}_osxcross_${{ inputs.osx-version }}_${{ hashFiles('**/os-release') }}
@@ -89,6 +89,13 @@ runs:
       run: |
         cd "$GITHUB_ACTION_PATH/osxcross"
         bash ./build.sh
+
+    - uses: actions/cache/save@v4
+      with:
+        key: ${{ runner.os }}_osxcross_${{ inputs.osx-version }}_${{ hashFiles('**/os-release') }}
+        path: |
+          ${{ env.OSXCROSS_TARGET }}
+          ${{ env.OSXCROSS_FOLDER }}/target/bin
 
     - shell: bash
       run: |
