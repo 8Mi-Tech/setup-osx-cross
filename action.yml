@@ -91,6 +91,7 @@ runs:
         bash ./build.sh
 
     - uses: actions/cache/save@v4
+      if: steps.osxcross-cache.outputs.cache-hit != 'true'
       with:
         key: ${{ runner.os }}_osxcross_${{ inputs.osx-version }}_${{ hashFiles('**/os-release') }}
         path: |
