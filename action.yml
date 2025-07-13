@@ -74,6 +74,8 @@ runs:
       id: osxcross-cache
       with:
         key: ${{ runner.os }}_osxcross_${{ inputs.osx-version }}_${{ hashFiles('/etc/os-release') }}
+        restore-keys: |
+          ${{ runner.os }}_osxcross_${{ inputs.osx-version }}_
         path: |
           ~/.cargo/registry
           ~/.cargo/git
