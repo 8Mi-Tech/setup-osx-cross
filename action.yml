@@ -71,7 +71,7 @@ runs:
         echo "OSXCROSS_TARGET=${OSXCROSS_FOLDER}/target" >> $GITHUB_ENV
 
     - uses: actions/cache/restore@v4
-      id: cache
+      id: osxcross-cache
       with:
         key: ${{ runner.os }}_osxcross_${{ inputs.osx-version }}_${{ hashFiles('/etc/os-release') }}
         path: |
@@ -81,7 +81,7 @@ runs:
           ${{ env.OSXCROSS_FOLDER }}/target/bin
 
     - shell: bash
-      if: steps.cache.outputs.cache-hit != 'true'
+      if: steps.osxcross-cache.outputs.cache-hit != 'true'
       env:
         SDK_VERSION: "${{ inputs.osx-version }}"
         UNATTENDED: "yes"
@@ -91,7 +91,7 @@ runs:
 
     - uses: actions/cache/save@v4
       with:
-        key: ${{ steps.cache.outputs.cache-primary-key }}
+        key: ${{ steps.osxcross-cache.outputs.cache-primary-key }}
         path: |
           ~/.cargo/registry
           ~/.cargo/git
